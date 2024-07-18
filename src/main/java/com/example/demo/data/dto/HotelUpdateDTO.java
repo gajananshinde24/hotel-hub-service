@@ -18,23 +18,20 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class HotelRequestDTO {
-
-    @NotBlank(message = "Hotel name cannot be blank")
+public class HotelUpdateDTO {
+	
+   
     @Size(max = 100, message = "Hotel name cannot be longer than 100 characters")
     private String name;
-
-    @NotBlank(message = "Hotel email cannot be blank")
+  
     @Email(message = "Hotel email should be valid")
     private String hotelEmail;
 
-    @NotBlank(message = "Hotel phone cannot be blank")
     @Pattern(regexp = "^\\d{10}$", message = "Hotel phone should be 10 digits")
     private String hotelPhone;
 
-    @NotNull(message = "Hotel address cannot be null")
     private Address address;
-    
-    @NotNull(message = "Owner ID cannot be null")
+   
     private UUID ownerId;
+
 }

@@ -6,9 +6,14 @@ import java.util.UUID;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.example.demo.enums.Role;
+import com.example.demo.enums.RoomType;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -69,11 +74,22 @@ public class User {
 	            message = "Password must have at least one uppercase letter, one lowercase letter, one digit, and one special character")
 	    @Column(nullable = false)
 	    private String password;
+	    
+	    @Enumerated(EnumType.STRING)
+	  	@NotNull(message = "Role is required")
+	  	private Role role;
+	    
+	    
+	    @OneToMany(mappedBy = "user" , cascade = CascadeType.ALL)
+	    private List<Hotel> hotels;
 	
-	
-
 	    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	    private List<Booking> bookings;
+	    
+	    
+	  
+	    
+	    
 
 	
 	

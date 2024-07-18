@@ -29,23 +29,29 @@ public class SecurityConfig {
     @Autowired
     private UserServiceImpl userServiceImpl;
     
-    @Autowired
-    private JwtAuthFilter authFilter;
+//    @Autowired
+//    private JwtAuthFilter authFilter;
     
     @Autowired
     private PasswordEncoder passwordEncoder;
+    
+    //private final JwtAuthFilter jwtAuthFilter;
 
+  
+    
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    	
+    	System.out.println("Hiiiiii -----------------");
        return http.csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/v1/users/**").authenticated()
+            	.requestMatchers("/api/**").permitAll()
                 .requestMatchers("/api/v1/auth/**").permitAll()
-                .requestMatchers("/auth/admin/**").authenticated())
-            .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).
-            authenticationProvider(authenticationProvider())
-            .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
-            .build();
+                .requestMatchers("/auth/admin/**").permitAll()).build();
+            //.sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).
+           // authenticationProvider(authenticationProvider())
+         //   .addFilterBefore(new JwtAuthFilter() , UsernamePasswordAuthenticationFilter.class)
+           
     }
 
 

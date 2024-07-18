@@ -4,6 +4,8 @@ package com.example.demo.data.dto;
 
 import java.util.UUID;
 
+import com.example.demo.enums.Role;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,6 +34,8 @@ public class UserDTO {
     private String phoneNumber;
     
     private String nationality;
+    
+    private Role role;
 
     
 
