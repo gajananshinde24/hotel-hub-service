@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+import com.example.demo.enums.BookingStatus;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,5 +24,6 @@ public class BookingResponseDTO {
     private LocalDate bookingDate;
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
+    private BookingStatus status;
 }
 

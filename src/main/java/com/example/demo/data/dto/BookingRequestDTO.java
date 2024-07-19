@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+import com.example.demo.enums.BookingStatus;
+
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -37,4 +39,8 @@ public class BookingRequestDTO {
     @NotNull(message = "Check-out date cannot be null")
     @FutureOrPresent(message = "Check-out date cannot be in the past")
     private LocalDate checkOutDate;
+    
+    
+    
+    private BookingStatus status;
 }

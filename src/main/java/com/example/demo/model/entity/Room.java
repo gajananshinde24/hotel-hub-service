@@ -60,10 +60,13 @@ public class Room {
 	@JoinColumn(name = "hotelId")
 	private Hotel hotel;
 
-	@ManyToMany
-	@JoinTable( name = "booking_room", joinColumns = @JoinColumn(name = "roomId"), 
-				inverseJoinColumns = @JoinColumn(name = "bookingId"))
-	private List<Booking> bookings;
+//	@ManyToMany
+//	@JoinTable( name = "booking_room", joinColumns = @JoinColumn(name = "roomId"), 
+//				inverseJoinColumns = @JoinColumn(name = "bookingId"))
+//	private List<Booking> bookings;
+	
+	@ManyToMany(mappedBy = "rooms")
+    private List<Booking> bookings;
 	
 
 }
