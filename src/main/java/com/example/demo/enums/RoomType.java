@@ -2,9 +2,12 @@ package com.example.demo.enums;
 
 
 public enum RoomType {
-    SINGLE,
-    DOUBLE,
+    STANDARD,
     SUITE,
-    FAMILY
+    FAMILY,
+    QUAD,
+    PRESIDENTIAL_SUITE,
+    
+    
 }
 
