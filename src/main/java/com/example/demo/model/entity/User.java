@@ -68,12 +68,9 @@ public class User {
 	    private String nationality;
 	    
 	    
-	    @NotNull(message = "Password cannot be null")
-	    @Size(min = 8, message = "Password must be at least 8 characters")
-	    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
-	            message = "Password must have at least one uppercase letter, one lowercase letter, one digit, and one special character")
-	    @Column(nullable = false)
+	    @Column(nullable = false, length = 255)
 	    private String password;
+	 
 	    
 	    @Enumerated(EnumType.STRING)
 	  	@NotNull(message = "Role is required")

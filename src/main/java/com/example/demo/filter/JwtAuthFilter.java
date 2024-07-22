@@ -35,9 +35,16 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 	        throws ServletException, IOException {
 		
-		System.out.println("------------ In JWT auth filter -----------");
+		
 
+		
 	    final String authorizationHeader = request.getHeader("Authorization");
+	    final String requestPath = request.getServletPath();
+	  	    
+	    if (requestPath.equals("/api/v1/auth/login") || requestPath.equals("/api/v1/users/register")) {
+            chain.doFilter(request, response);
+            return;
+        }
 
 	    if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
 	        handleException(response, "Token is not present in header", HttpStatus.UNAUTHORIZED);
@@ -57,7 +64,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
 	        if (!jwtTokenUtil.validateToken(jwt, userDetails)) {
 	            handleException(response, "Invalid token", HttpStatus.UNAUTHORIZED);
-	            return;
 	        }
 
 	        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(

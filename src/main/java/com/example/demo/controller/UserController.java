@@ -31,15 +31,13 @@ public class UserController {
 	@Autowired
 	public UserService userService;
 	
-	@GetMapping("/g")
+	@GetMapping("/health-check")
 	public ResponseEntity<String> greet() {
 		 return ResponseEntity.ok("Hello from Spring Boot");
 	}
 	
 	@PostMapping("/register")
 	public ResponseEntity<ApiResponse<UserDTO>> register(@RequestBody  @Valid UserCreationDTO user) {
-		
-		System.out.println("user-->   "+user.getPassword());
 		return userService.registerUser(user);
 	}
 	

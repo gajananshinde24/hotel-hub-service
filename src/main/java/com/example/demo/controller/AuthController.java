@@ -30,61 +30,51 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/api/v1/auth")
 public class AuthController {
-	
-	 	@Autowired
-	    private AuthenticationManager authenticationManager;
 
-	    @Autowired
-	    private JwtTokenUtil jwtTokenUtil;
-	    
-	    @Autowired
-		private ResponseBuilder responseBuilder;
-	    
-	    @Autowired
-		private UserService userService;
-	    
-	    @Autowired
-		private ModelMapper mapper;
+	@Autowired
+	private AuthenticationManager authenticationManager;
 
-	    
-	    
-	    @PostMapping("/login")
-	    public ResponseEntity<?> authenticateUser(@RequestBody @Valid LoginRequest loginRequest) {
-	    	
-	    	System.out.println("login #############");
-	    	 Authentication authentication = null;
-	    	
-	    	try {
-	    		  authentication = authenticationManager.authenticate(
-	  	                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
-				
-			} catch (Exception e) {
-				
-				throw new InvalidRequestException("Invalid email or password");
-				
-			}
+	@Autowired
+	private JwtTokenUtil jwtTokenUtil;
 
-	      
+	@Autowired
+	private ResponseBuilder responseBuilder;
 
-	        SecurityContextHolder.getContext().setAuthentication(authentication);
-	        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-	        String jwt = jwtTokenUtil.generateToken(userDetails);
-	        
-	        System.out.println("jwt token ---------------" + jwt);
-	        
-	        
-	      String email =   jwtTokenUtil.getUsernameFromToken(jwt);
-	      User user = userService.getUserByUserName(email);
-	      
-	      UserDTO userDTO = mapper.map(user, UserDTO.class);
-	      
-	      Map<String, Object> map = new HashMap<>();
-	      map.put("jwtToken", jwt);
-	        
-	        return responseBuilder.buildResponse(HttpStatus.ACCEPTED.value(), "Login Succesfull",userDTO,map);
-	    }
-	    
-	    
-	    
+	@Autowired
+	private UserService userService;
+
+	@Autowired
+	private ModelMapper mapper;
+
+	@PostMapping("/login")
+	public ResponseEntity<?> authenticateUser(@RequestBody @Valid LoginRequest loginRequest) {
+
+		Authentication authentication = null;
+
+		try {
+			authentication = authenticationManager.authenticate(
+					new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+
+		} catch (Exception e) {
+
+			throw new InvalidRequestException("Invalid email or password");
+
+		}
+
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+		String jwt = jwtTokenUtil.generateToken(userDetails.getUsername());
+
+		String email = jwtTokenUtil.getUsernameFromToken(jwt);
+		User user = userService.getUserByUserName(email);
+
+		UserDTO userDTO = mapper.map(user, UserDTO.class);
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("jwtToken", jwt);
+
+		return responseBuilder.buildResponse(HttpStatus.ACCEPTED.value(), "Login Succesfull", userDTO, map);
+	}
 
 }
