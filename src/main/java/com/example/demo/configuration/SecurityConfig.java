@@ -16,52 +16,40 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-
-
 import com.example.demo.service.UserServiceImpl;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
-    
+
+
     @Autowired
     private UserServiceImpl userServiceImpl;
-    
 
-    
     @Autowired
     private PasswordEncoder passwordEncoder;
-    
 
+	@Bean
+	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-  
-    
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    	
-       return http.csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(auth -> auth
-            	.requestMatchers("/api/**").permitAll()
-                .requestMatchers("/api/v1/auth/**").permitAll()
-                .requestMatchers("/auth/admin/**").permitAll()).build();
-        
-           
-    }
+		return http.csrf(csrf -> csrf.disable())
+				.authorizeHttpRequests(auth -> auth.requestMatchers("/api/**").permitAll()
+						.requestMatchers("/api/v1/auth/**").permitAll().requestMatchers("/auth/admin/**").permitAll())
+				.build();
 
+	}
 
+	@Bean
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+		return config.getAuthenticationManager();
+	}
 
-
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-        return config.getAuthenticationManager();
-    }
-
-    @Bean
-    public AuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userServiceImpl);
-        authProvider.setPasswordEncoder(passwordEncoder);
-        return authProvider;
-    }
+	@Bean
+	public AuthenticationProvider authenticationProvider() {
+		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+		authProvider.setUserDetailsService(userServiceImpl);
+		authProvider.setPasswordEncoder(passwordEncoder);
+		return authProvider;
+	}
 }
