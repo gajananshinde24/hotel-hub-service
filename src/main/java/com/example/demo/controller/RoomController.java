@@ -51,7 +51,7 @@ public class RoomController {
 	}
 	
 	@PutMapping("/{roomId}")
-	public ResponseEntity<ApiResponse<RoomResponseDTO>> putMethodName(@PathVariable UUID roomId, @RequestBody RoomUpdateDTO roomUpdateDTO) {
+	public ResponseEntity<ApiResponse<RoomResponseDTO>> updateRoom(@PathVariable UUID roomId, @RequestBody RoomUpdateDTO roomUpdateDTO) {
 		return roomService.updateRoom(roomId, roomUpdateDTO);
 	}
 	
