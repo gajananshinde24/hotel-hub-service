@@ -46,6 +46,16 @@ public class GlobalExceptionHandler {
 	      
     }
 	
+	@ExceptionHandler(RuntimeException.class)
+	public ApiException handleRuntimeException(RuntimeException e) {
+		ApiException apiException = new ApiException();
+		apiException.setErrorMessage(e.getMessage());
+		apiException.setStatusCode(HttpStatus.BAD_REQUEST.value());
+		apiException.setZonedDateTime(ZonedDateTime.now());
+		return apiException;  
+		
+	}
+	
 	
 
 }

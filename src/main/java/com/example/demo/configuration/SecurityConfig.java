@@ -23,11 +23,12 @@ import com.example.demo.service.UserServiceImpl;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-	@Autowired
-	private UserServiceImpl userServiceImpl;
 
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+    @Autowired
+    private UserServiceImpl userServiceImpl;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

@@ -6,6 +6,7 @@ import java.util.UUID;
 import com.example.demo.enums.RoomType;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -37,6 +38,7 @@ public class Room {
 
 	@NotNull(message = "Room number cannot be null")
 	@Min(value = 1, message = "Room number must be greater than 0")
+	@Column(unique = true)
 	private Integer roomNumber;
 
 	@NotNull(message = "Number of persons cannot be null")
