@@ -38,8 +38,6 @@ public class UserController {
 	
 	@PostMapping("/register")
 	public ResponseEntity<ApiResponse<UserDTO>> register(@RequestBody  @Valid UserCreationDTO user) {
-		
-		System.out.println("user-->   "+user.getPassword());
 		return userService.registerUser(user);
 	}
 	
