@@ -99,6 +99,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		if (user.getEmail() != null) {
 			dbUser.setEmail(user.getEmail());
 		}
+		if (user.getRole() != null) {
+			dbUser.setRole(user.getRole());
+		}
 
 		User savedUser = userRepository.save(dbUser);
 
@@ -123,7 +126,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String email) {
-		User user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("Canot find User with email: " + email)) ;
+		User user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("Canot find User with email: -" + email)) ;
 
 		return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),
 				new ArrayList<>());

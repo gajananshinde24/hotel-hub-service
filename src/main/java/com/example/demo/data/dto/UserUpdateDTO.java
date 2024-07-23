@@ -2,9 +2,10 @@ package com.example.demo.data.dto;
 
 import lombok.Getter;
 
+import com.example.demo.enums.Role;
 
 import jakarta.validation.constraints.Email;
-
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Setter;
@@ -40,4 +41,7 @@ public class UserUpdateDTO {
 
     @Size(min = 1, max = 50, message = "Nationality must be between 1 and 50 characters")
     private String nationality;
+    
+    @NotNull(message = "Role cannot be null")
+    private Role role;
 }

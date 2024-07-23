@@ -20,7 +20,7 @@ public class BookingResponseDTO {
     private UUID bookingId;
     private UUID userId;
     private UUID hotelId;
-    private List<UUID> roomIds;
+    private List<RoomResponseDTO> rooms;
     private LocalDate bookingDate;
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
