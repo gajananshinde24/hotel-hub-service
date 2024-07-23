@@ -1,5 +1,8 @@
 package com.example.demo.data.dto;
 
+import com.example.demo.enums.Role;
+import com.example.demo.enums.RoomType;
+
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -43,5 +46,8 @@ public class UserCreationDTO {
 	    @NotNull(message = "Nationality cannot be null")
 	    @Size(min = 1, max = 50, message = "Nationality must be between 1 and 50 characters")
 	    private String nationality;
+	    
+	    @NotNull(message = "Role cannot be null")
+	    private Role role;
 
 }

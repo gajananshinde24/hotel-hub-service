@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 		User user = mapper.map(userdto, User.class);
 		
-		user.setPassword(passwordEncoder.encode(userdto.getPassword()));
+		//user.setPassword(passwordEncoder.encode(userdto.getPassword()));
 
 		User savedUser = userRepository.save(user);
 
