@@ -97,6 +97,7 @@ public class RoomServiceImpl implements RoomService {
 		
 		List<RoomResponseDTO> roomsDTOList = new ArrayList<>();
 		rooms.forEach((room) -> roomsDTOList.add(mapper.map(room, RoomResponseDTO.class)));
+		
 		return responseBuilder.buildResponse(HttpStatus.CREATED.value(), "All rooms with HotelId - "+hotelId, roomsDTOList);
 	}
 

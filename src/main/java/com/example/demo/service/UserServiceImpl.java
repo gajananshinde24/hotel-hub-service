@@ -23,7 +23,11 @@ import com.example.demo.model.response.ApiResponse;
 import com.example.demo.model.response.ResponseBuilder;
 import com.example.demo.repository.UserRepository;
 
+import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class UserServiceImpl implements UserService, UserDetailsService {
 
 	@Autowired
@@ -43,7 +47,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 		User user = mapper.map(userdto, User.class);
 		
-		//user.setPassword(passwordEncoder.encode(userdto.getPassword()));
+		user.setPassword(passwordEncoder.encode(userdto.getPassword()));
 
 		User savedUser = userRepository.save(user);
 
@@ -51,6 +55,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 		return responseBuilder.buildResponse(HttpStatus.CREATED.value(), "User saved successfully", userDTO2);
 	}
+
 
 	@Override
 	public ResponseEntity<ApiResponse<UserDTO>> getUser(UUID userid) {
@@ -94,6 +99,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		if (user.getEmail() != null) {
 			dbUser.setEmail(user.getEmail());
 		}
+		if (user.getRole() != null) {
+			dbUser.setRole(user.getRole());
+		}
 
 		User savedUser = userRepository.save(dbUser);
 
@@ -118,7 +126,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String email) {
-		User user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("Canot find User with email: " + email)) ;
+		User user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("Canot find User with email: -" + email)) ;
 
 		return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),
 				new ArrayList<>());

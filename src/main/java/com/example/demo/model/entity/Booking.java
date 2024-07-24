@@ -4,11 +4,16 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+import com.example.demo.enums.BookingStatus;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.FutureOrPresent;
@@ -37,7 +42,12 @@ public class Booking {
     @JoinColumn(name = "hotelId")
     private Hotel hotel;
 
-    @ManyToMany(mappedBy = "bookings")
+//    @ManyToMany(mappedBy = "bookings")
+//    private List<Room> rooms;
+    @ManyToMany
+    @JoinTable(name = "booking_room", 
+               joinColumns = @JoinColumn(name = "bookingId"), 
+               inverseJoinColumns = @JoinColumn(name = "roomId"))
     private List<Room> rooms;
 
     @NotNull(message = "Booking date cannot be null")
@@ -51,4 +61,8 @@ public class Booking {
     @NotNull(message = "Check-out date cannot be null")
     @FutureOrPresent(message = "Check-out date cannot be in the past")
     private LocalDate checkOutDate;
+    
+    @Enumerated(EnumType.STRING)
+    @NotNull(message = "Booking status cannot be null")
+    private BookingStatus status;
 }

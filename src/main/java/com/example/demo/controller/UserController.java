@@ -31,7 +31,7 @@ public class UserController {
 	@Autowired
 	public UserService userService;
 	
-	@GetMapping("/g")
+	@GetMapping("/health-check")
 	public ResponseEntity<String> greet() {
 		 return ResponseEntity.ok("Hello from Spring Boot");
 	}

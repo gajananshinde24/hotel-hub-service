@@ -163,8 +163,7 @@ public class HotelServiceImpl implements HotelService {
 	        
 		List<HotelResponseDTO> hotelDTOList = new ArrayList<>();
 		hotelPage.forEach((hotel) -> hotelDTOList.add(mapper.map(hotel, HotelResponseDTO.class)));
-//		return responseBuilder.buildResponse(HttpStatus.OK.value(),"Hotel data",hotelDTOList,map);
-		return responseBuilder.buildResponse(HttpStatus.ACCEPTED.value(), "Login Succesfull",hotelDTOList,map);
+		return responseBuilder.buildResponse(HttpStatus.ACCEPTED.value(), "All hotels- ",hotelDTOList,map);
 	}
 	
 
