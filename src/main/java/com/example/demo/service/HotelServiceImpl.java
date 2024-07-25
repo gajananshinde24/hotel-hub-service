@@ -49,7 +49,7 @@ public class HotelServiceImpl implements HotelService {
 		User user = userRepository.findById(hotelRequestDTO.getOwnerId()).orElseThrow(
 				() -> new ResourceNotFoundException("Canot find Owner with Id: " + hotelRequestDTO.getOwnerId()));
 
-		if (user.getRole() != Role.HOTELOWNER) {
+		if (user.getRole() != Role.ROLE_HOTELOWNER) {
 			throw new InvalidRequestException("The user is not a hotel owner");
 		}
 
@@ -89,7 +89,7 @@ public class HotelServiceImpl implements HotelService {
 			User user = userRepository.findById(hotelUpdateDTO.getOwnerId()).orElseThrow(
 					() -> new ResourceNotFoundException("Canot find Owner with Id: " + hotelUpdateDTO.getOwnerId()));
 
-			if (user.getRole() != Role.HOTELOWNER) {
+			if (user.getRole() != Role.ROLE_HOTELOWNER) {
 				throw new InvalidRequestException("The user is not a hotel owner");
 			}
 

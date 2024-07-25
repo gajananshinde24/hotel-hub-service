@@ -3,12 +3,15 @@ package com.example.demo.util;
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+
+import com.example.demo.security.MyUserDetails;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -51,9 +54,13 @@ public class JwtTokenUtil {
         return expiration.before(new Date());
     }
     
-    //generate token for user
+
+ // generate token for user with roles
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
+        claims.put("roles", userDetails.getAuthorities().stream()
+                                        .map(authority -> authority.getAuthority())
+                                        .toList());
         return doGenerateToken(claims, userDetails.getUsername());
     }
 
@@ -87,5 +94,11 @@ public class JwtTokenUtil {
 		final String username = getUsernameFromToken(token);
 		return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
 	}
+	
+	 // retrieve roles from jwt token
+    public List<String> getRolesFromToken(String token) {
+        Claims claims = getAllClaimsFromToken(token);
+        return claims.get("roles", List.class);
+    }
 
 }

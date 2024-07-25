@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,16 +32,19 @@ public class HotelController {
 	public HotelService hotelService;
 	
 	
+	@PreAuthorize("hasAnyRole('ADMIN','HOTELOWNER')")
 	@PostMapping("")
 	public ResponseEntity<ApiResponse<HotelResponseDTO>> registerHotel(@RequestBody @Valid HotelRequestDTO hotelRequestDTO){
 		return hotelService.registerHotel(hotelRequestDTO);
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN','HOTELOWNER')")
 	@PutMapping("/{hotelId}")
 	public ResponseEntity<ApiResponse<HotelResponseDTO>> updateHotel(@PathVariable UUID hotelId, @RequestBody @Valid HotelUpdateDTO hotelUpdateDTO){
 		return hotelService.updateHotel(hotelId, hotelUpdateDTO);
 		
 	}
+	
 	
 	@GetMapping("")
 	public ResponseEntity<ApiResponse<List<HotelResponseDTO>>> getAllHotels(
@@ -52,11 +56,13 @@ public class HotelController {
 		return hotelService.getAllHotels(searchBy, filter, page, size, sortBy);
 	}
 	
+	
 	@GetMapping("/{hotelId}")
 	public ResponseEntity<ApiResponse<HotelResponseDTO>> getHotelbyId(@PathVariable UUID hotelId){
 		return hotelService.getHotelById(hotelId);
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@DeleteMapping("/{hotelId}")
 	public ResponseEntity<ApiResponse<HotelResponseDTO>> deleteHotelById(@PathVariable UUID hotelId){
 		return hotelService.deleteHotel(hotelId);
