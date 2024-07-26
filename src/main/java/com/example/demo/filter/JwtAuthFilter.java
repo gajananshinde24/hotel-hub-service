@@ -13,7 +13,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-
+import com.example.demo.exception.InvalidRequestException;
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.util.JwtTokenUtil;
 
 import io.jsonwebtoken.Claims;
@@ -54,13 +55,19 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 	                    }
 	                }
 	            } catch (Exception e) {
-	                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-	                response.getWriter().write("{\"error\": \"Invalid token\"}");
+
+	            	response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+	                response.setContentType("application/json");
+	                String message = "Invalid token";  
+	                response.getWriter().write("{\"error\": \"" + message + "\", \"statusCode\": " + HttpServletResponse.SC_UNAUTHORIZED + ", \"zonedDateTime\": \"" + ZonedDateTime.now() + "\"}");
 	                return;
+	            	
+	            	
 	            }
 	        }
 
 	        filterChain.doFilter(request, response);
 	    }
+	 
 	 
 }

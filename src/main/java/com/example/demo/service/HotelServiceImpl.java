@@ -71,7 +71,7 @@ public class HotelServiceImpl implements HotelService {
 
 		Hotel hotel = hotelRepository.findById(hotelId)
 				.orElseThrow(() -> new ResourceNotFoundException("Canot find hotel with Id" + hotelId));
-
+		
 		if (hotelUpdateDTO.getName() != null) {
 			hotel.setName(hotelUpdateDTO.getName());
 		}
@@ -95,8 +95,10 @@ public class HotelServiceImpl implements HotelService {
 
 			hotel.setName(hotelUpdateDTO.getName());
 		}
+		
+		Hotel updatedHotel = hotelRepository.save(hotel);
 
-		HotelResponseDTO hotelResponseDTO = mapper.map(hotel, HotelResponseDTO.class);
+		HotelResponseDTO hotelResponseDTO = mapper.map(updatedHotel, HotelResponseDTO.class);
 
 		return responseBuilder.buildResponse(HttpStatus.ACCEPTED.value(), "Hotel updated succesfully", hotelResponseDTO);
 	}
