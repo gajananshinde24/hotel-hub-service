@@ -30,7 +30,7 @@ public class BookingController {
 	@Autowired
 	private BookingSevice bookingSevice;
 	
-	@PreAuthorize("hasAnyRole('USER', 'ADMIN', 'HOTELOWNER')")
+	
 	@PostMapping("")
 	public ResponseEntity<ApiResponse<BookingResponseDTO>> addBooking(
 			@RequestBody @Valid BookingRequestDTO bookingRequestDTO) {
