@@ -28,7 +28,7 @@ import com.example.demo.model.entity.Hotel;
 import com.example.demo.model.entity.Room;
 import com.example.demo.model.entity.User;
 import com.example.demo.model.response.ApiResponse;
-import com.example.demo.model.response.ResponseBuilder;
+import com.example.demo.model.response.ApiResponseBuilder;
 import com.example.demo.repository.BookingRepository;
 import com.example.demo.repository.HotelRepository;
 import com.example.demo.repository.RoomRepository;
@@ -50,7 +50,7 @@ public class BookingServiceImpl implements BookingSevice {
 	private RoomRepository roomRepository;
 
 	@Autowired
-	private ResponseBuilder responseBuilder;
+	private ApiResponseBuilder responseBuilder;
 
 	@Autowired
 	private ModelMapper mapper;

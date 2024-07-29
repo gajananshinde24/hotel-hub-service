@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 @Component
-public class ResponseBuilder {
+public class ApiResponseBuilder {
 
     public <T> ResponseEntity<ApiResponse<T>> buildResponse(
             HttpHeaders httpHeader, int httpStatusCode, String message, T data, Map<String, Object> otherParams) {

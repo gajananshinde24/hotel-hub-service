@@ -21,7 +21,7 @@ import com.example.demo.data.dto.LoginRequest;
 import com.example.demo.data.dto.UserDTO;
 import com.example.demo.exception.InvalidRequestException;
 import com.example.demo.model.entity.User;
-import com.example.demo.model.response.ResponseBuilder;
+import com.example.demo.model.response.ApiResponseBuilder;
 import com.example.demo.service.UserService;
 import com.example.demo.util.JwtTokenUtil;
 
@@ -38,7 +38,7 @@ public class AuthController {
 	private JwtTokenUtil jwtTokenUtil;
 
 	@Autowired
-	private ResponseBuilder responseBuilder;
+	private ApiResponseBuilder responseBuilder;
 
 	@Autowired
 	private UserService userService;
