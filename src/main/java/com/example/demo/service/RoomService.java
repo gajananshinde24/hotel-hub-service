@@ -19,9 +19,13 @@ public interface RoomService {
 	
 	public ResponseEntity<ApiResponse<RoomResponseDTO>> updateRoom(UUID roomId, RoomUpdateDTO roomUpdateDTO);
 	
-	public ResponseEntity<ApiResponse<List<RoomResponseDTO>>> getAllRoomsByHotelId(UUID hotel);
+	public ResponseEntity<ApiResponse<List<RoomResponseDTO>>> getAllRoomsByHotelId(UUID hotelId);
 	
 	public ResponseEntity<ApiResponse<List<RoomResponseDTO>>> getAllRooms();
+	
+	public ResponseEntity<ApiResponse<List<RoomResponseDTO>>> getAllAvailableRooms();
+	
+	public ResponseEntity<ApiResponse<List<RoomResponseDTO>>> getAllAvailableRoomsByHotelId(UUID hotelId);
 	
 	
 	
