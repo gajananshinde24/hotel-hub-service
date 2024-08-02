@@ -9,6 +9,7 @@ import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -56,6 +57,7 @@ public class BookingServiceImpl implements BookingSevice {
 	private ModelMapper mapper;
 
 	@Override
+    @CacheEvict(value = "availableRooms", allEntries = true) 
 	public ResponseEntity<ApiResponse<BookingResponseDTO>> addBooking(BookingRequestDTO bookingRequestDTO) {
 
 		Hotel hotel = hotelRepository.findById(bookingRequestDTO.getHotelId()).orElseThrow(

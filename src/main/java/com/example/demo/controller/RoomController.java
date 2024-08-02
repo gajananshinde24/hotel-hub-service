@@ -60,6 +60,21 @@ public class RoomController {
 	
 	
 	
+	@GetMapping("/available")
+	public ResponseEntity<ApiResponse<List<RoomResponseDTO>>> getAllAvailableRooms(){
+		return roomService.getAllAvailableRooms();
+	}
+	
+	@GetMapping("/available/hotel/{hotelId}")
+	public ResponseEntity<ApiResponse<List<RoomResponseDTO>>> getAllAvailableRoomsByHotelId(@PathVariable UUID hotelId){
+		return roomService.getAllAvailableRoomsByHotelId(hotelId);
+	}
+	
+	
+	
+	
+	
+	
 	
 	
 	

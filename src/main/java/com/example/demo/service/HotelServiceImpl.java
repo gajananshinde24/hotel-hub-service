@@ -8,6 +8,8 @@ import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -68,7 +70,8 @@ public class HotelServiceImpl implements HotelService {
 	}
 
 	@Override
-	public ResponseEntity<ApiResponse<HotelResponseDTO>> updateHotel(UUID hotelId, HotelUpdateDTO hotelUpdateDTO) {
+    @CachePut(value = "hotel", key = "#hotelId")
+	public Hotel updateHotel(UUID hotelId, HotelUpdateDTO hotelUpdateDTO) {
 
 		Hotel hotel = hotelRepository.findById(hotelId)
 				.orElseThrow(() -> new ResourceNotFoundException("Canot find hotel with Id" + hotelId));
@@ -99,9 +102,10 @@ public class HotelServiceImpl implements HotelService {
 		
 		Hotel updatedHotel = hotelRepository.save(hotel);
 
-		HotelResponseDTO hotelResponseDTO = mapper.map(updatedHotel, HotelResponseDTO.class);
-
-		return responseBuilder.buildResponse(HttpStatus.ACCEPTED.value(), "Hotel updated succesfully", hotelResponseDTO);
+//		HotelResponseDTO hotelResponseDTO = mapper.map(updatedHotel, HotelResponseDTO.class);
+//
+//		return responseBuilder.buildResponse(HttpStatus.ACCEPTED.value(), "Hotel updated succesfully", hotelResponseDTO);
+		return updatedHotel;
 	}
 
 	@Override
@@ -115,15 +119,14 @@ public class HotelServiceImpl implements HotelService {
 	}
 
 	@Override
-	public ResponseEntity<ApiResponse<HotelResponseDTO>> deleteHotel(UUID hotelId) {
+    @CacheEvict(value = "hotel", key = "#hotelId")
+	public Hotel deleteHotel(UUID hotelId) {
 		
 		Hotel hotel = hotelRepository.findById(hotelId)
 				.orElseThrow(() -> new ResourceNotFoundException("Canot find hotel with Id" + hotelId));
 		hotelRepository.deleteById(hotelId);
 		
-		HotelResponseDTO hotelResponseDTO = mapper.map(hotel, HotelResponseDTO.class);
-		return responseBuilder.buildResponse(HttpStatus.OK.value(), "Hotel deleted succesfully with Id -"+hotelId, hotelResponseDTO);
-		
+		return hotel;
 		
 	}
 
