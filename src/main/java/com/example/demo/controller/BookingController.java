@@ -85,5 +85,10 @@ public class BookingController {
 	public ResponseEntity<ApiResponse<BookingResponseDTO>> cancelBooking(@PathVariable UUID bookingId) {
 		return bookingSevice.cancelBooking(bookingId);
 	}
+	
+	@GetMapping("/hotel-date/{hotelId}")
+	public ResponseEntity<ApiResponse<List<BookingResponseDTO>>> getBookingsByHotelIdAndBookingDate(@PathVariable UUID hotelId){
+		return bookingSevice.getBookingsByHotelIdAndBookingDate(hotelId);
+	}
 
 }

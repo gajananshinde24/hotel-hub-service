@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.data.dto.BookingRequestDTO;
@@ -34,6 +36,9 @@ import com.example.demo.repository.BookingRepository;
 import com.example.demo.repository.HotelRepository;
 import com.example.demo.repository.RoomRepository;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.util.EmailUtils;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class BookingServiceImpl implements BookingSevice {
@@ -55,6 +60,9 @@ public class BookingServiceImpl implements BookingSevice {
 
 	@Autowired
 	private ModelMapper mapper;
+	
+	@Autowired
+	private EmailUtils emailUtils;
 
 	@Override
     @CacheEvict(value = "availableRooms", allEntries = true) 
@@ -275,5 +283,74 @@ public class BookingServiceImpl implements BookingSevice {
 		return responseBuilder.buildResponse(HttpStatus.OK.value(), "Booking cancelled successfully",
 				bookingResponseDTO);
 	}
+
+	@Override
+	public ResponseEntity<ApiResponse<List<BookingResponseDTO>>> getBookingsByHotelIdAndBookingDate(UUID hotelId) {
+		
+		Hotel hotel = hotelRepository.findById(hotelId).orElseThrow(() -> new ResourceNotFoundException("Hotel not found with id" + hotelId));
+		
+		LocalDate today = LocalDate.now();
+		
+		List<Booking> bookings = bookingRepository.findByHotelIdAndBookingDate(hotelId, today);
+		
+		
+		  List<BookingResponseDTO> bookingDTOs = bookings.stream()
+		            .map(booking -> mapper.map(booking, BookingResponseDTO.class))
+		            .collect(Collectors.toList());
+
+		 return  responseBuilder.buildResponse(HttpStatus.OK.value(), "Bookings retrieved successfully", bookingDTOs);
+		
+		
+	}
+
+	@Override
+	public String generateEmailBody(Hotel hotel, List<Booking> bookings) {
+		   StringBuilder emailBody = new StringBuilder();
+		    emailBody.append("<html><body>");
+		    emailBody.append("<p>Dear ").append(hotel.getName()).append(" Team,</p>");
+		    emailBody.append("<p>Here are the bookings for today (").append(LocalDate.now()).append("):</p>");
+
+		    for (Booking booking : bookings) {
+		        emailBody.append("<p><strong>Booking ID:</strong> ").append(booking.getBookingId()).append("<br>")
+		                 .append("<strong>User:</strong> ").append(booking.getUser().getFirstName()).append("<br>")
+		                 .append("<strong>Rooms:</strong> ").append(booking.getRooms().stream().map(room -> "Room No - "+String.valueOf(room.getRoomNumber()))	
+		                 .collect(Collectors.joining(","))).append("<br>")
+		                 .append("<strong>Check-in Date:</strong> ").append(booking.getCheckInDate()).append("<br>")
+		                 .append("<strong>Check-out Date:</strong> ").append(booking.getCheckOutDate()).append("</p>");
+		    }
+
+		    emailBody.append("<p>Best regards,<br>")
+		             .append("Your Hotel Management System</p>");
+		    emailBody.append("</body></html>");
+
+	        return emailBody.toString();
+	}
+	
+	
+	 public void sendTodaysHotelBookingsEmail() {
+	        List<Hotel> hotels = hotelRepository.findAll();
+	        LocalDate today = LocalDate.now();
+
+	        for (Hotel hotel : hotels) {
+	            List<Booking> bookings = bookingRepository.findByHotelIdAndBookingDate(hotel.getHotelId(), today);
+
+	            if (!bookings.isEmpty()) {
+	            
+	                String emailBody = generateEmailBody(hotel, bookings);
+
+	              
+	                User owner = userRepository.findById(hotel.getUser().getUserId())
+	                        .orElseThrow(() -> new RuntimeException("Owner not found for hotel " + hotel.getHotelId()));
+	              emailUtils.sendEmail(owner.getEmail(), "Today's Bookings for Hotel: " + hotel.getName(), emailBody);
+	            }
+	        }
+	    }
+	 	
+	    //@Scheduled(cron = "* * * * * ?") 
+		@Scheduled(cron = "* * 23 * * ?") 
+		public void scheduleEmailSending() {
+			sendTodaysHotelBookingsEmail();
+		}
+	 
 
 }

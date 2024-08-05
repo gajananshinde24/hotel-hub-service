@@ -48,6 +48,10 @@ public interface BookingRepository extends JpaRepository<Booking, UUID> {
     
     @Query("SELECT r FROM Room r JOIN r.bookings b WHERE b.status = :status AND r.hotel.hotelId = :hotelId")
     List<Room> findBookedRoomsByHotelId(@Param("status") BookingStatus status, @Param("hotelId") UUID hotelId);
+    
+    @Query("SELECT b FROM Booking b where  b.hotel.hotelId = :hotelId AND b.bookingDate = :today")
+    List<Booking> findByHotelIdAndBookingDate(@Param("hotelId")UUID  hotelId, @Param("today") LocalDate today);
+    
 
     
     

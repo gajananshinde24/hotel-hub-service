@@ -9,6 +9,7 @@ import com.example.demo.enums.BookingStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -44,7 +45,7 @@ public class Booking {
 
 //    @ManyToMany(mappedBy = "bookings")
 //    private List<Room> rooms;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "booking_room", 
                joinColumns = @JoinColumn(name = "bookingId"), 
                inverseJoinColumns = @JoinColumn(name = "roomId"))

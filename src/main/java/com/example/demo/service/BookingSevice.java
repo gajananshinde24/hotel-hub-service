@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import com.example.demo.data.dto.BookingRequestDTO;
 import com.example.demo.data.dto.BookingResponseDTO;
 import com.example.demo.data.dto.ExtendedBookingDTO;
+import com.example.demo.model.entity.Booking;
+import com.example.demo.model.entity.Hotel;
 import com.example.demo.model.response.ApiResponse;
 
 public interface BookingSevice {
@@ -25,6 +27,13 @@ public interface BookingSevice {
 	public ResponseEntity<ApiResponse<List<BookingResponseDTO>>> getBookingsByUserId(UUID userId);
 	
 	public ResponseEntity<ApiResponse<List<BookingResponseDTO>>> getAllBookings(String searchStatus, int page, int size, String sortBy);
+	
+	public ResponseEntity<ApiResponse<List<BookingResponseDTO>>> getBookingsByHotelIdAndBookingDate(UUID hotelId);
+	
+	public String generateEmailBody(Hotel hotel, List<Booking> bookings);
+	
+	public void sendTodaysHotelBookingsEmail();
+	
 	
 	
 	

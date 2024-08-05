@@ -22,6 +22,7 @@ import com.example.demo.data.dto.UserUpdateDTO;
 import com.example.demo.model.entity.User;
 import com.example.demo.model.response.ApiResponse;
 import com.example.demo.service.UserService;
+import com.example.demo.util.EmailUtils;
 
 import jakarta.validation.Valid;
 
@@ -30,7 +31,9 @@ import jakarta.validation.Valid;
 public class UserController {
 	
 	@Autowired
-	public UserService userService;
+	private UserService userService;
+	
+	
 	
 	
 
