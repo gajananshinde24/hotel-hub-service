@@ -21,3 +21,4 @@ buildNumber.properties
 .settings/
 .app.log
 *.log
+*.log.*
