@@ -20,7 +20,7 @@ import com.example.demo.data.dto.UserUpdateDTO;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.entity.User;
 import com.example.demo.model.response.ApiResponse;
-import com.example.demo.model.response.ResponseBuilder;
+import com.example.demo.model.response.ApiResponseBuilder;
 import com.example.demo.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	private UserRepository userRepository;
 
 	@Autowired
-	private ResponseBuilder responseBuilder;
+	private ApiResponseBuilder responseBuilder;
 
 	@Autowired
 	private ModelMapper mapper;

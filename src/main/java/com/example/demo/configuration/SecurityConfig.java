@@ -19,8 +19,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+
 import com.example.demo.filter.JwtAuthFilter;
 import com.example.demo.security.MyUserDetailsService;
+
+	
 
 
 @Configuration
@@ -44,12 +47,12 @@ public class SecurityConfig {
 
 
 	@Bean
-	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+	SecurityFilterChain securityFilterChain(HttpSecurity http)	 throws Exception {
 
 
 		http.csrf(csrf -> csrf.disable())
 		.authorizeHttpRequests(authorize -> {
-			authorize.requestMatchers("/api/v1/users/register","/api/v1/auth/login").permitAll();	
+			authorize.requestMatchers("/api/v1/users/register","/api/v1/auth/login","/v3/api-docs/**","/swagger-resource/**","/swagger-ui/**").permitAll();	
 		    authorize.anyRequest().authenticated();
 		});
 

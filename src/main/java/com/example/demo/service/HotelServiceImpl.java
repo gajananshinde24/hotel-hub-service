@@ -25,7 +25,7 @@ import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.entity.Hotel;
 import com.example.demo.model.entity.User;
 import com.example.demo.model.response.ApiResponse;
-import com.example.demo.model.response.ResponseBuilder;
+import com.example.demo.model.response.ApiResponseBuilder;
 import com.example.demo.repository.HotelRepository;
 import com.example.demo.repository.UserRepository;
 
@@ -39,7 +39,7 @@ public class HotelServiceImpl implements HotelService {
 	private ModelMapper mapper;
 
 	@Autowired
-	private ResponseBuilder responseBuilder;
+	private ApiResponseBuilder responseBuilder;
 
 	@Autowired
 	private UserRepository userRepository;
