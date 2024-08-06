@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import com.example.demo.enums.BookingStatus;
 import com.example.demo.model.entity.Booking;
+import com.example.demo.model.entity.Room;
 
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, UUID> {
@@ -39,6 +40,17 @@ public interface BookingRepository extends JpaRepository<Booking, UUID> {
     List<Booking> findByUser_UserId(UUID userId);
     
     Page<Booking> findByStatus(BookingStatus status, Pageable pageable);
+    
+    @Query("SELECT r FROM Room r JOIN r.bookings b WHERE b.status = :status")
+    List<Room> findBookedRooms(@Param("status") BookingStatus status);
+    
+    List<Booking> findByHotel_HotelId(UUID hotelId);
+    
+    @Query("SELECT r FROM Room r JOIN r.bookings b WHERE b.status = :status AND r.hotel.hotelId = :hotelId")
+    List<Room> findBookedRoomsByHotelId(@Param("status") BookingStatus status, @Param("hotelId") UUID hotelId);
+
+    
+    
 	
 	
 }
