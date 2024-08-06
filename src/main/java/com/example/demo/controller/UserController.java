@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,6 +32,8 @@ public class UserController {
 	@Autowired
 	public UserService userService;
 	
+	
+
 	@GetMapping("/health-check")
 	public ResponseEntity<String> greet() {
 		 return ResponseEntity.ok("Hello from Spring Boot");
@@ -41,16 +44,21 @@ public class UserController {
 		return userService.registerUser(user);
 	}
 	
+
+    @PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("")
 	public  ResponseEntity<ApiResponse<List<UserDTO>>> getAllUsers(){
 		return userService.getAllUsers();
 	}
-	
+    
+    
 	@GetMapping("/{userId}")
 	public ResponseEntity<ApiResponse<UserDTO>> getUserById(@PathVariable UUID userId){
 		return userService.getUser(userId);
 	}
 	
+    
+    
 	@PutMapping("/{userId}")
 	public ResponseEntity<ApiResponse<UserDTO>> updateUser(@PathVariable UUID userId, @RequestBody @Valid UserUpdateDTO user){
 		return userService.updateUser(userId, user);

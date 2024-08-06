@@ -49,7 +49,7 @@ public class HotelServiceImpl implements HotelService {
 		User user = userRepository.findById(hotelRequestDTO.getOwnerId()).orElseThrow(
 				() -> new ResourceNotFoundException("Canot find Owner with Id: " + hotelRequestDTO.getOwnerId()));
 
-		if (user.getRole() != Role.HOTELOWNER) {
+		if (user.getRole() != Role.ROLE_HOTELOWNER) {
 			throw new InvalidRequestException("The user is not a hotel owner");
 		}
 
@@ -71,7 +71,7 @@ public class HotelServiceImpl implements HotelService {
 
 		Hotel hotel = hotelRepository.findById(hotelId)
 				.orElseThrow(() -> new ResourceNotFoundException("Canot find hotel with Id" + hotelId));
-
+		
 		if (hotelUpdateDTO.getName() != null) {
 			hotel.setName(hotelUpdateDTO.getName());
 		}
@@ -89,14 +89,16 @@ public class HotelServiceImpl implements HotelService {
 			User user = userRepository.findById(hotelUpdateDTO.getOwnerId()).orElseThrow(
 					() -> new ResourceNotFoundException("Canot find Owner with Id: " + hotelUpdateDTO.getOwnerId()));
 
-			if (user.getRole() != Role.HOTELOWNER) {
+			if (user.getRole() != Role.ROLE_HOTELOWNER) {
 				throw new InvalidRequestException("The user is not a hotel owner");
 			}
 
 			hotel.setName(hotelUpdateDTO.getName());
 		}
+		
+		Hotel updatedHotel = hotelRepository.save(hotel);
 
-		HotelResponseDTO hotelResponseDTO = mapper.map(hotel, HotelResponseDTO.class);
+		HotelResponseDTO hotelResponseDTO = mapper.map(updatedHotel, HotelResponseDTO.class);
 
 		return responseBuilder.buildResponse(HttpStatus.ACCEPTED.value(), "Hotel updated succesfully", hotelResponseDTO);
 	}

@@ -2,9 +2,9 @@ package com.example.demo.enums;
 
 public enum Role {
 	
-	 	CUSTOMER,
-	    HOTELOWNER,
-	    ADMIN
+	 	ROLE_CUSTOMER,
+	    ROLE_HOTELOWNER,
+	    ROLE_ADMIN
 	
 
 }

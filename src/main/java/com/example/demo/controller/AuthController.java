@@ -63,8 +63,11 @@ public class AuthController {
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+		
+		
 
-		String jwt = jwtTokenUtil.generateToken(userDetails.getUsername());
+
+		 String jwt = jwtTokenUtil.generateToken(userDetails);
 
 		String email = jwtTokenUtil.getUsernameFromToken(jwt);
 		User user = userService.getUserByUserName(email);

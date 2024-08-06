@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,6 +30,7 @@ public class RoomController {
 	private RoomService roomService;
 	
 	
+	@PreAuthorize("hasAnyRole('ADMIN','HOTELOWNER')")
 	@PostMapping("")
 	public ResponseEntity<ApiResponse<RoomResponseDTO>> registerRoom(@RequestBody RoomRequestDTO roomRequestDTO){
 		return roomService.addRoom(roomRequestDTO);
@@ -50,6 +52,7 @@ public class RoomController {
 		return roomService.getRoomById(roomId);
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN','HOTELOWNER')")
 	@PutMapping("/{roomId}")
 	public ResponseEntity<ApiResponse<RoomResponseDTO>> updateRoom(@PathVariable UUID roomId, @RequestBody RoomUpdateDTO roomUpdateDTO) {
 		return roomService.updateRoom(roomId, roomUpdateDTO);

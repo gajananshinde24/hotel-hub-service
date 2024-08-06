@@ -42,6 +42,6 @@ public class UserUpdateDTO {
     @Size(min = 1, max = 50, message = "Nationality must be between 1 and 50 characters")
     private String nationality;
     
-    @NotNull(message = "Role cannot be null")
+    
     private Role role;
 }
