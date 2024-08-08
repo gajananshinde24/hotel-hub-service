@@ -8,6 +8,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import com.example.demo.enums.Role;
 import com.example.demo.enums.RoomType;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -77,7 +78,7 @@ public class User {
 	  	@NotNull(message = "Role is required")
 	  	private Role role;
 	    
-	    
+	    @JsonBackReference
 	    @OneToMany(mappedBy = "user" , cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 	    private List<Hotel> hotels;
 	
