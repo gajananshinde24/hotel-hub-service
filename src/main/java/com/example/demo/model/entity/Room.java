@@ -1,9 +1,13 @@
 package com.example.demo.model.entity;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 
 import com.example.demo.enums.RoomType;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -32,6 +36,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Room {
 
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID roomId;
@@ -57,6 +62,7 @@ public class Room {
 
 	@ManyToOne
 	@JoinColumn(name = "hotelId")
+	//@JsonBackReference(value = "hotel-room")
 	private Hotel hotel;
 
 //	@ManyToMany
@@ -64,6 +70,8 @@ public class Room {
 //				inverseJoinColumns = @JoinColumn(name = "bookingId"))
 //	private List<Booking> bookings;
 	
+//	@JsonBackReference(value = "booking-room-ref")
+    //@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "bookingId")
 	@ManyToMany(mappedBy = "rooms")
     private List<Booking> bookings;
 	

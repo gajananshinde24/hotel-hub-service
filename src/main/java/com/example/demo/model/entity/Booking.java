@@ -1,10 +1,16 @@
 package com.example.demo.model.entity;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
 import com.example.demo.enums.BookingStatus;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -31,16 +37,20 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Booking {
 
-    @Id
+
+
+	@Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID bookingId;
-
+    
+    //@JsonBackReference(value = "user-booking")
     @ManyToOne
     @JoinColumn(name = "userId")
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "hotelId")
+   // @JsonBackReference(value = "hotel-booking")
     private Hotel hotel;
 
 //    @ManyToMany(mappedBy = "bookings")
@@ -49,6 +59,8 @@ public class Booking {
     @JoinTable(name = "booking_room", 
                joinColumns = @JoinColumn(name = "bookingId"), 
                inverseJoinColumns = @JoinColumn(name = "roomId"))
+//    @JsonManagedReference(value = "booking-room-ref")
+   // @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "roomId")
     private List<Room> rooms;
 
     @NotNull(message = "Booking date cannot be null")

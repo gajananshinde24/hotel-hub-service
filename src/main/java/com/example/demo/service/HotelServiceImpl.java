@@ -129,7 +129,7 @@ public class HotelServiceImpl implements HotelService {
 		return hotel;
 		
 	}
-
+	 @CacheEvict(value = "hotel", allEntries = true)
 	@Override
 	public ResponseEntity<ApiResponse<List<HotelResponseDTO>>> getAllHotels(String searchBy, String filter, int page, int size, String sortBy) {
 		

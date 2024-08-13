@@ -9,6 +9,8 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
@@ -19,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.data.dto.BookingRequestDTO;
 import com.example.demo.data.dto.BookingResponseDTO;
@@ -38,7 +41,6 @@ import com.example.demo.repository.RoomRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.util.EmailUtils;
 
-import jakarta.transaction.Transactional;
 
 @Service
 public class BookingServiceImpl implements BookingSevice {
@@ -63,9 +65,16 @@ public class BookingServiceImpl implements BookingSevice {
 	
 	@Autowired
 	private EmailUtils emailUtils;
+	
+	 @Autowired
+	 private RabbitTemplate amqpTemplate;
+	 
+	 @Autowired
+	  private Queue queue;
 
 	@Override
-    @CacheEvict(value = "availableRooms", allEntries = true) 
+    //@CacheEvict(value = "availableRooms", allEntries = true) 
+	@Transactional
 	public ResponseEntity<ApiResponse<BookingResponseDTO>> addBooking(BookingRequestDTO bookingRequestDTO) {
 
 		Hotel hotel = hotelRepository.findById(bookingRequestDTO.getHotelId()).orElseThrow(
@@ -107,13 +116,17 @@ public class BookingServiceImpl implements BookingSevice {
 
 		for (Room room : rooms) {
 			room.setIsAvailable(false);
-			roomRepository.save(room);
+			//roomRepository.save(room);
 		}
 
 		Booking savedBooking = bookingRepository.save(booking);
+		roomRepository.saveAll(rooms);
+		
 
 		BookingResponseDTO bookingResponseDTO = mapper.map(savedBooking, BookingResponseDTO.class);
 		// bookingResponseDTO.setRoomIds(bookingRequestDTO.getRoomIds());
+		
+		amqpTemplate.convertAndSend("bookingExchange","routingkey", bookingResponseDTO);
 
 		return responseBuilder.buildResponse(HttpStatus.CREATED.value(), "Booking successful", bookingResponseDTO);
 	}

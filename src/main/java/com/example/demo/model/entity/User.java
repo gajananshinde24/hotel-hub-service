@@ -1,6 +1,7 @@
 package com.example.demo.model.entity;
 
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 
@@ -9,6 +10,7 @@ import org.hibernate.annotations.GenericGenerator;
 import com.example.demo.enums.Role;
 import com.example.demo.enums.RoomType;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -38,7 +40,11 @@ import lombok.ToString;
 @ToString(exclude = {"bookings"})
 public class User {
 	
-	 	@Id
+
+
+
+
+		@Id
 	    @GeneratedValue(strategy = GenerationType.UUID) 
     	private UUID userId;
 
@@ -78,10 +84,11 @@ public class User {
 	  	@NotNull(message = "Role is required")
 	  	private Role role;
 	    
-	    @JsonBackReference
+	  //  @JsonManagedReference(value = "user-hotel")
 	    @OneToMany(mappedBy = "user" , cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 	    private List<Hotel> hotels;
 	
+	 //   @JsonManagedReference(value = "user-booking")
 	    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	    private List<Booking> bookings;
 	    

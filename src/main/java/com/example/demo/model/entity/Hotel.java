@@ -1,14 +1,18 @@
 package com.example.demo.model.entity;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -32,7 +36,9 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Hotel {
 
-    @Id
+
+
+	@Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID hotelId;
 
@@ -55,13 +61,16 @@ public class Hotel {
     private Address address;
 
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
+  //  @JsonManagedReference(value = "hotel-room")
     private List<Room> rooms;
-
+    
+  //  @JsonManagedReference(value = "hotel-booking")
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
     private List<Booking> bookings;
     
     @ManyToOne
     @JoinColumn(name = "ownerId")
+   // @JsonBackReference(value = "user-hotel")
     private User user;
 }
 
