@@ -49,5 +49,4 @@ public class UserCreationDTO {
 	    
 	    @NotNull(message = "Role cannot be null")
 	    private Role role;
-
 }

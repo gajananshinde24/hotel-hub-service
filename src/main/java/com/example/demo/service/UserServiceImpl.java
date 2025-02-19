@@ -48,9 +48,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		User user = mapper.map(userdto, User.class);
 		
 		user.setPassword(passwordEncoder.encode(userdto.getPassword()));
-
-		User savedUser = userRepository.save(user);
-
+		User savedUser =  userRepository.save(user);
 		UserDTO userDTO2 = mapper.map(savedUser, UserDTO.class);
 
 		return responseBuilder.buildResponse(HttpStatus.CREATED.value(), "User saved successfully", userDTO2);
